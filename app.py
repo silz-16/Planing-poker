@@ -297,13 +297,14 @@ PAGE = r"""
   
   .content { position:relative; z-index:10; width:100%; display:flex; flex-direction:column; align-items:center; }
   
-  .main-layout { display: flex; gap: 20px; max-width: 1200px; width: 100%; align-items: flex-start; justify-content: center; }
-  .left-panel { flex: 1; max-width: 900px; min-width: 0; }
-  .right-panel { width: 300px; flex-shrink: 0; }
+  /* РАСШИРЕННЫЙ БЛОК УЧАСТНИКОВ */
+  .main-layout { display: flex; gap: 24px; max-width: 1300px; width: 100%; align-items: flex-start; justify-content: center; }
+  .left-panel { flex: 1; max-width: 880px; min-width: 0; }
+  .right-panel { width: 380px; flex-shrink: 0; }
   
-  @media (max-width: 1000px) {
+  @media (max-width: 1100px) {
     .main-layout { flex-direction: column; align-items: center; }
-    .right-panel { width: 100%; max-width: 900px; margin-bottom: 20px; order: 2; }
+    .right-panel { width: 100%; max-width: 880px; margin-bottom: 20px; order: 2; }
   }
 
   .hud-header { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
@@ -337,7 +338,7 @@ PAGE = r"""
   .mode-btn.active { background: linear-gradient(160deg,#ff3333,#ff7777); border-color:#fff; color:#04040c; box-shadow: 0 0 25px rgba(255,60,60,0.6); }
   .mode-btn .sub { font-size:.65rem; opacity:.75; margin-top:4px; font-weight:400; letter-spacing:.05em; }
   
-  /* ОПТИМИЗИРОВАННЫЕ КАРТОЧКИ (мгновенный отклик) */
+  /* МГНОВЕННЫЕ КАРТОЧКИ (Убраны transition) */
   .cards-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(48px, 1fr)); gap:6px; margin-top:18px; }
   .poker-card { 
     aspect-ratio: 1 / 1.35; 
@@ -346,22 +347,20 @@ PAGE = r"""
     display:flex; align-items:center; justify-content:center; 
     font-family: 'JetBrains Mono', monospace; font-size:1.05rem; font-weight:700; 
     cursor:pointer; 
-    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s; /* Убрали долгий transform */
+    transition: none !important; /* Мгновенная реакция */
     color:#e0e8ff; 
     clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); 
     user-select:none; 
   }
   .poker-card:hover { border-color:#ff5555; color:#ff5555; box-shadow: 0 0 18px rgba(255,60,60,0.45), inset 0 0 18px rgba(255,60,60,0.1); }
-  .poker-card:active { transform: scale(0.92); transition: transform 0s; }
+  .poker-card:active { transform: scale(0.92); }
   .poker-card.selected { 
-    background: linear-gradient(160deg,#ff3333,#ff7777); 
+    background: #ff3333; /* Сплошной цвет быстрее градиента */
     border-color:#fff; color:#04040c; 
-    transform: translateY(-4px); 
     box-shadow: 0 0 25px rgba(255,60,60,0.7), 0 0 50px rgba(255,120,120,0.5); 
-    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s; 
   }
   
-  .mega-cat { background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.15); padding:14px 16px; margin-bottom:10px; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); transition: .25s; }
+  .mega-cat { background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.15); padding:14px 16px; margin-bottom:10px; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
   .mega-cat.done { border-color: rgba(34,197,94,0.5); background: rgba(34,197,94,0.04); }
   .mega-cat-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-family: 'JetBrains Mono', monospace; }
   .mega-cat-name { font-size:.82rem; color:#e0e8ff; letter-spacing:.02em; display:flex; align-items:center; gap:8px; }
@@ -373,25 +372,23 @@ PAGE = r"""
     border:1px solid rgba(255,80,80,0.25); background: rgba(255,60,60,0.04); 
     font-family: 'JetBrains Mono', monospace; font-size:.9rem; font-weight:700; 
     cursor:pointer; 
-    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    transition: none !important; /* Мгновенная реакция */
     color:#e0e8ff; clip-path: polygon(0 5px, 5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%); 
     user-select:none; 
   }
   .mega-card:hover { border-color:#ff5555; color:#ff5555; background: rgba(255,60,60,0.12); }
-  .mega-card:active { transform: scale(0.92); transition: transform 0s; }
+  .mega-card:active { transform: scale(0.92); }
   .mega-card.selected { 
-    background: linear-gradient(160deg,#ff3333,#ff7777); 
+    background: #ff3333; 
     border-color:#fff; color:#04040c; 
     box-shadow: 0 0 15px rgba(255,60,60,0.6); 
-    transform: translateY(-2px); 
-    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s; 
   }
   
   .info-btn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(255,80,80,0.2); color:#ff5555; font-size:12px; cursor:pointer; border:1px solid rgba(255,80,80,0.5); transition:0.2s; font-weight:900; font-family: sans-serif; margin-left: 6px; }
   .info-btn:hover { background:#ff5555; color:#04040c; }
   
   .users { display:flex; flex-direction:column; gap:8px; }
-  .user-row { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.1); font-family: 'JetBrains Mono', monospace; font-size:.85rem; transition:.3s; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); gap: 10px; }
+  .user-row { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.1); font-family: 'JetBrains Mono', monospace; font-size:.85rem; transition:.3s; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); gap: 12px; }
   .user-row.voted { border-left:3px solid #22c55e; }
   .user-row.just-revealed { animation: popIn .5s ease; }
   @keyframes popIn { 0% { transform:scale(0.92); opacity:0.4; } 60% { transform:scale(1.03); } 100% { transform:scale(1); opacity:1; } }
@@ -539,7 +536,7 @@ PAGE = r"""
 <div class="content">
   <div class="hud-header">
     <div class="hud-dot"></div>
-    <div class="hud-label">DRONE OPS · v11.1</div>
+    <div class="hud-label">DRONE OPS · v11.2</div>
   </div>
   <h1>Planning Poker</h1>
   <p class="subtitle">// estimate · vote · reveal · excel //</p>
@@ -1374,7 +1371,7 @@ function buildCards() {
 async function vote(value) {
   if (state.revealed || !state.active || !NORMAL_CARDS.includes(String(value))) return;
   
-  // Оптимистичный UI
+  // Оптимистичный UI (мгновенно)
   state.myVote = String(value);
   document.querySelectorAll('.poker-card').forEach(card => {
     card.classList.toggle('selected', card.dataset.value === state.myVote);
@@ -1437,7 +1434,7 @@ async function voteMega(categoryId, value) {
   const category = [...CATEGORIES, HOURS_CAT].find(item => item.id === categoryId);
   if (!category || !getOptions(category).includes(String(value))) return;
 
-  // Оптимистичный UI
+  // Оптимистичный UI (мгновенно)
   if (!state.myVote) state.myVote = {};
   state.myVote[categoryId] = String(value);
   document.querySelectorAll(`.mega-card[data-cat="${categoryId}"]`).forEach(card => {
@@ -1536,7 +1533,7 @@ function updateUsersList(data) {
     const row = document.createElement('div');
     row.className = 'user-row' + ((state.mode === 'mega' ? user.ready : user.has_voted) ? ' voted' : '');
     
-    // Обрезка длинных имен
+    // Фикс длинных имен
     const name = document.createElement('span');
     name.className = 'user-name';
     name.textContent = (isCurrent ? '▶ ' : '') + user.name + (isCurrent ? ' (вы)' : '');
@@ -1858,7 +1855,7 @@ function openSaveModal() {
     durationField.input.classList.add('edited');
   });
   
-  // ИСПРАВЛЕНИЕ: Используем div вместо button для иконки подсказки
+  // Иконка подсказки (используем div вместо button)
   const hintButton = document.createElement('div');
   hintButton.className = 'info-btn';
   hintButton.style.marginLeft = '8px';
