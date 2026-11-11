@@ -236,7 +236,6 @@ def room_state(room_id, room, actor_id):
                 "filled": filled,
                 "ready": filled == len(CATEGORIES) + 1,
             }
-            # До раскрытия собственные оценки доступны только самому участнику.
             if revealed or user_id == actor_id:
                 item["votes"] = dict(votes)
         else:
@@ -338,10 +337,29 @@ PAGE = r"""
   .mode-btn.active { background: linear-gradient(160deg,#ff3333,#ff7777); border-color:#fff; color:#04040c; box-shadow: 0 0 25px rgba(255,60,60,0.6); }
   .mode-btn .sub { font-size:.65rem; opacity:.75; margin-top:4px; font-weight:400; letter-spacing:.05em; }
   
+  /* ОПТИМИЗИРОВАННЫЕ КАРТОЧКИ (мгновенный отклик) */
   .cards-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(48px, 1fr)); gap:6px; margin-top:18px; }
-  .poker-card { aspect-ratio: 1 / 1.35; background: linear-gradient(160deg, rgba(255,60,60,0.04), rgba(255,120,120,0.04)); border:1px solid rgba(255,80,80,0.2); display:flex; align-items:center; justify-content:center; font-family: 'JetBrains Mono', monospace; font-size:1.05rem; font-weight:700; cursor:pointer; transition: transform 0.1s ease, box-shadow 0.1s ease, color 0.1s ease; color:#e0e8ff; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); user-select:none; }
-  .poker-card:hover { border-color:#ff5555; color:#ff5555; transform:translateY(-4px); box-shadow: 0 0 18px rgba(255,60,60,0.45), inset 0 0 18px rgba(255,60,60,0.1); }
-  .poker-card.selected { background: linear-gradient(160deg,#ff3333,#ff7777); border-color:#fff; color:#04040c; transform:translateY(-4px); box-shadow: 0 0 25px rgba(255,60,60,0.7), 0 0 50px rgba(255,120,120,0.5); }
+  .poker-card { 
+    aspect-ratio: 1 / 1.35; 
+    background: linear-gradient(160deg, rgba(255,60,60,0.04), rgba(255,120,120,0.04)); 
+    border:1px solid rgba(255,80,80,0.2); 
+    display:flex; align-items:center; justify-content:center; 
+    font-family: 'JetBrains Mono', monospace; font-size:1.05rem; font-weight:700; 
+    cursor:pointer; 
+    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s; /* Убрали долгий transform */
+    color:#e0e8ff; 
+    clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); 
+    user-select:none; 
+  }
+  .poker-card:hover { border-color:#ff5555; color:#ff5555; box-shadow: 0 0 18px rgba(255,60,60,0.45), inset 0 0 18px rgba(255,60,60,0.1); }
+  .poker-card:active { transform: scale(0.92); transition: transform 0s; }
+  .poker-card.selected { 
+    background: linear-gradient(160deg,#ff3333,#ff7777); 
+    border-color:#fff; color:#04040c; 
+    transform: translateY(-4px); 
+    box-shadow: 0 0 25px rgba(255,60,60,0.7), 0 0 50px rgba(255,120,120,0.5); 
+    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s; 
+  }
   
   .mega-cat { background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.15); padding:14px 16px; margin-bottom:10px; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); transition: .25s; }
   .mega-cat.done { border-color: rgba(34,197,94,0.5); background: rgba(34,197,94,0.04); }
@@ -349,19 +367,40 @@ PAGE = r"""
   .mega-cat-name { font-size:.82rem; color:#e0e8ff; letter-spacing:.02em; display:flex; align-items:center; gap:8px; }
   .mega-cat-range { font-size:.7rem; color:#ff5555; letter-spacing:.15em; }
   .mega-cat-options { display:flex; gap:5px; flex-wrap:wrap; }
-  .mega-card { min-width:40px; height:44px; padding:0 10px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,80,80,0.25); background: rgba(255,60,60,0.04); font-family: 'JetBrains Mono', monospace; font-size:.9rem; font-weight:700; cursor:pointer; transition: transform 0.1s ease, box-shadow 0.1s ease, color 0.1s ease; color:#e0e8ff; clip-path: polygon(0 5px, 5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%); user-select:none; }
-  .mega-card:hover { border-color:#ff5555; color:#ff5555; background: rgba(255,60,60,0.12); transform:translateY(-2px); }
-  .mega-card.selected { background: linear-gradient(160deg,#ff3333,#ff7777); border-color:#fff; color:#04040c; box-shadow: 0 0 15px rgba(255,60,60,0.6); transform:translateY(-2px); }
+  .mega-card { 
+    min-width:40px; height:44px; padding:0 10px; 
+    display:flex; align-items:center; justify-content:center; 
+    border:1px solid rgba(255,80,80,0.25); background: rgba(255,60,60,0.04); 
+    font-family: 'JetBrains Mono', monospace; font-size:.9rem; font-weight:700; 
+    cursor:pointer; 
+    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    color:#e0e8ff; clip-path: polygon(0 5px, 5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%); 
+    user-select:none; 
+  }
+  .mega-card:hover { border-color:#ff5555; color:#ff5555; background: rgba(255,60,60,0.12); }
+  .mega-card:active { transform: scale(0.92); transition: transform 0s; }
+  .mega-card.selected { 
+    background: linear-gradient(160deg,#ff3333,#ff7777); 
+    border-color:#fff; color:#04040c; 
+    box-shadow: 0 0 15px rgba(255,60,60,0.6); 
+    transform: translateY(-2px); 
+    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s; 
+  }
   
   .info-btn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(255,80,80,0.2); color:#ff5555; font-size:12px; cursor:pointer; border:1px solid rgba(255,80,80,0.5); transition:0.2s; font-weight:900; font-family: sans-serif; margin-left: 6px; }
   .info-btn:hover { background:#ff5555; color:#04040c; }
   
   .users { display:flex; flex-direction:column; gap:8px; }
-  .user-row { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.1); font-family: 'JetBrains Mono', monospace; font-size:.85rem; transition:.3s; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); }
+  .user-row { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.1); font-family: 'JetBrains Mono', monospace; font-size:.85rem; transition:.3s; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); gap: 10px; }
   .user-row.voted { border-left:3px solid #22c55e; }
   .user-row.just-revealed { animation: popIn .5s ease; }
   @keyframes popIn { 0% { transform:scale(0.92); opacity:0.4; } 60% { transform:scale(1.03); } 100% { transform:scale(1); opacity:1; } }
-  .badge { padding:4px 12px; font-family: 'JetBrains Mono', monospace; font-size:.75rem; background: rgba(255,60,60,0.08); color:#ff5555; border:1px solid rgba(255,80,80,0.3); letter-spacing:.05em; }
+  
+  /* ФИКС ДЛИННЫХ ИМЕН */
+  .user-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .user-status-wrap { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+  
+  .badge { padding:4px 12px; font-family: 'JetBrains Mono', monospace; font-size:.75rem; background: rgba(255,60,60,0.08); color:#ff5555; border:1px solid rgba(255,80,80,0.3); letter-spacing:.05em; white-space: nowrap; }
   .badge.voted { background: rgba(34,197,94,0.1); color:#4ade80; border-color:rgba(34,197,94,0.4); }
   .badge.partial { background: rgba(255,165,0,0.1); color:#ffb84d; border-color:rgba(255,165,0,0.4); }
   .badge.admin { background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000; border:none; font-weight:800; }
@@ -500,7 +539,7 @@ PAGE = r"""
 <div class="content">
   <div class="hud-header">
     <div class="hud-dot"></div>
-    <div class="hud-label">DRONE OPS · v11.0</div>
+    <div class="hud-label">DRONE OPS · v11.1</div>
   </div>
   <h1>Planning Poker</h1>
   <p class="subtitle">// estimate · vote · reveal · excel //</p>
@@ -1496,10 +1535,16 @@ function updateUsersList(data) {
     if (state.mode === 'mega' ? user.ready : user.has_voted) completeCount++;
     const row = document.createElement('div');
     row.className = 'user-row' + ((state.mode === 'mega' ? user.ready : user.has_voted) ? ' voted' : '');
+    
+    // Обрезка длинных имен
     const name = document.createElement('span');
+    name.className = 'user-name';
     name.textContent = (isCurrent ? '▶ ' : '') + user.name + (isCurrent ? ' (вы)' : '');
+    name.title = user.name;
+    
     const right = document.createElement('div');
-    right.style.cssText = 'display:flex;gap:8px;align-items:center;';
+    right.className = 'user-status-wrap';
+    
     if (isAdmin) right.appendChild(makeBadge('ADMIN', 'admin'));
     else if (state.isAdmin) {
       const transfer = document.createElement('button');
