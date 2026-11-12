@@ -320,75 +320,88 @@ PAGE = r"""
   .card::after  { bottom:-1px; right:-1px; border-left:0; border-top:0; }
   
   .row { display:flex; gap:10px; flex-wrap:wrap; }
-  input, button, select { padding:13px 18px; border:none; font-size:.95rem; outline:none; transition:.25s cubic-bezier(.4,0,.2,1); font-family:inherit; letter-spacing:.03em; cursor:default; }
+  .form-fields { align-items:flex-start; }
+  .field-group { display:flex; flex-direction:column; gap:7px; flex:1 1 220px; min-width:0; }
+  .field-label { display:block; color:#ff7777; font-family:'JetBrains Mono',monospace; font-size:.7rem; font-weight:700; line-height:1.4; letter-spacing:.12em; text-transform:uppercase; }
+  .field-help { display:block; color:#777795; font-family:'JetBrains Mono',monospace; font-size:.62rem; line-height:1.4; letter-spacing:.02em; }
+  .join-fields { align-items:flex-end; }
+  .join-submit { flex:0 0 150px; min-height:46px; }
+  .share-link-field { min-width:0; }
+  .share-link-field input { width:100%; min-width:0; }
+  .timer-setting { display:flex; flex-direction:column; gap:5px; min-width:105px; }
+  .timer-label { white-space:nowrap; font-size:.58rem; letter-spacing:.08em; }
+  input, button, select { padding:13px 18px; border:none; font-size:.95rem; outline:none; transition:120ms cubic-bezier(.2,.8,.2,1); font-family:inherit; letter-spacing:.03em; cursor:default; }
   input, select { flex:1; min-width:150px; background: rgba(255,60,60,0.04); color:#fff; border:1px solid rgba(255,80,80,0.25); clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
   input::placeholder { color:#4a4a6a; }
   input:focus, select:focus { border-color:#ff5555; background: rgba(255,60,60,0.08); box-shadow: 0 0 24px rgba(255,60,60,0.25); }
   select option { background:#03030a; color:#fff; }
   button { cursor:pointer; background: linear-gradient(135deg, #ff3333, #ff7777); color:#04040c; font-weight:700; text-transform:uppercase; font-size:.8rem; letter-spacing:.15em; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
-  button:hover { transform:translateY(-2px); box-shadow: 0 0 30px rgba(255,60,60,0.6), 0 0 60px rgba(255,120,120,0.35); }
-  button:active { transform:scale(0.96); }
+  button:hover { transform:translateY(-1px); box-shadow: 0 0 14px rgba(255,60,60,0.32); }
+  button:active { transform:scale(0.97); transition-duration:50ms; }
   button:disabled { opacity: 0.3; cursor: not-allowed; transform:none; box-shadow:none; }
   
   h3 { font-family: 'JetBrains Mono', monospace; font-size:.75rem; letter-spacing:.25em; text-transform:uppercase; color:#ff5555; margin-bottom:14px; font-weight:500; }
   
   .mode-picker { display:flex; gap:8px; margin-top:14px; }
-  .mode-btn { flex:1; padding:14px 16px; text-align:center; cursor:pointer; border:1px solid rgba(255,80,80,0.3); background: rgba(255,60,60,0.04); color:#e0e8ff; font-family:'JetBrains Mono', monospace; font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); transition:.2s; }
+  .mode-btn { flex:1; padding:14px 16px; text-align:center; cursor:pointer; border:1px solid rgba(255,80,80,0.3); background: rgba(255,60,60,0.04); color:#e0e8ff; font-family:'JetBrains Mono', monospace; font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); transition:120ms ease-out; }
   .mode-btn:hover { border-color:#ff5555; background: rgba(255,60,60,0.1); }
   .mode-btn.active { background: linear-gradient(160deg,#ff3333,#ff7777); border-color:#fff; color:#04040c; box-shadow: 0 0 25px rgba(255,60,60,0.6); }
   .mode-btn .sub { font-size:.65rem; opacity:.75; margin-top:4px; font-weight:400; letter-spacing:.05em; }
   
-  /* МГНОВЕННЫЕ КАРТОЧКИ (Убраны transition) */
+  /* Быстрые карточки голосования: короткий отклик без тяжёлых эффектов */
   .cards-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(48px, 1fr)); gap:6px; margin-top:18px; }
-  .poker-card { 
-    aspect-ratio: 1 / 1.35; 
-    background: linear-gradient(160deg, rgba(255,60,60,0.04), rgba(255,120,120,0.04)); 
-    border:1px solid rgba(255,80,80,0.2); 
-    display:flex; align-items:center; justify-content:center; 
-    font-family: 'JetBrains Mono', monospace; font-size:1.05rem; font-weight:700; 
-    cursor:pointer; 
-    transition: none !important; /* Мгновенная реакция */
-    color:#e0e8ff; 
-    clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); 
-    user-select:none; 
+  button.poker-card {
+    appearance:none; -webkit-appearance:none;
+    width:100%; min-width:0; min-height:0; aspect-ratio:1 / 1.35;
+    display:flex; align-items:center; justify-content:center;
+    margin:0; padding:0;
+    background:linear-gradient(160deg, rgba(255,60,60,0.05), rgba(255,120,120,0.04));
+    border:1px solid rgba(255,80,80,0.25);
+    color:#e0e8ff; font-family:'JetBrains Mono',monospace;
+    font-size:1.05rem; font-weight:700; line-height:1;
+    letter-spacing:0; text-transform:none;
+    cursor:pointer; user-select:none; -webkit-user-select:none;
+    touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+    clip-path:polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+    transition:transform 90ms ease-out, background-color 100ms ease-out, border-color 100ms ease-out, box-shadow 100ms ease-out, color 100ms ease-out;
   }
-  .poker-card:hover { border-color:#ff5555; color:#ff5555; box-shadow: 0 0 18px rgba(255,60,60,0.45), inset 0 0 18px rgba(255,60,60,0.1); }
-  .poker-card:active { transform: scale(0.92); }
-  .poker-card.selected { 
-    background: #ff3333; /* Сплошной цвет быстрее градиента */
-    border-color:#fff; color:#04040c; 
-    box-shadow: 0 0 25px rgba(255,60,60,0.7), 0 0 50px rgba(255,120,120,0.5); 
-  }
-  
+  button.poker-card:hover { transform:translateY(-1px); border-color:#ff5555; color:#ff7777; background:rgba(255,60,60,0.12); box-shadow:0 0 10px rgba(255,60,60,0.22); }
+  button.poker-card:active { transform:scale(.94); transition-duration:45ms; }
+  button.poker-card.selected { background:linear-gradient(145deg,#ff3333,#ff6868); border-color:#fff; color:#04040c; transform:translateY(-1px); box-shadow:0 0 12px rgba(255,60,60,0.48); }
+  button.poker-card.selected:active { transform:scale(.94); transition-duration:45ms; }
+  button.poker-card:focus-visible, button.mega-card:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+  button.poker-card:disabled, button.mega-card:disabled { cursor:not-allowed; }
+
   .mega-cat { background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.15); padding:14px 16px; margin-bottom:10px; clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
   .mega-cat.done { border-color: rgba(34,197,94,0.5); background: rgba(34,197,94,0.04); }
   .mega-cat-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-family: 'JetBrains Mono', monospace; }
   .mega-cat-name { font-size:.82rem; color:#e0e8ff; letter-spacing:.02em; display:flex; align-items:center; gap:8px; }
   .mega-cat-range { font-size:.7rem; color:#ff5555; letter-spacing:.15em; }
   .mega-cat-options { display:flex; gap:5px; flex-wrap:wrap; }
-  .mega-card { 
-    min-width:40px; height:44px; padding:0 10px; 
-    display:flex; align-items:center; justify-content:center; 
-    border:1px solid rgba(255,80,80,0.25); background: rgba(255,60,60,0.04); 
-    font-family: 'JetBrains Mono', monospace; font-size:.9rem; font-weight:700; 
-    cursor:pointer; 
-    transition: none !important; /* Мгновенная реакция */
-    color:#e0e8ff; clip-path: polygon(0 5px, 5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%); 
-    user-select:none; 
+  button.mega-card {
+    appearance:none; -webkit-appearance:none;
+    min-width:40px; height:44px; min-height:0; margin:0; padding:0 10px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(255,80,80,0.25);
+    background:rgba(255,60,60,0.04);
+    color:#e0e8ff; font-family:'JetBrains Mono',monospace;
+    font-size:.9rem; line-height:1; font-weight:700;
+    letter-spacing:0; text-transform:none;
+    cursor:pointer; user-select:none; -webkit-user-select:none;
+    touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+    clip-path:polygon(0 5px, 5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%);
+    transition:transform 90ms ease-out, background-color 100ms ease-out, border-color 100ms ease-out, box-shadow 100ms ease-out, color 100ms ease-out;
   }
-  .mega-card:hover { border-color:#ff5555; color:#ff5555; background: rgba(255,60,60,0.12); }
-  .mega-card:active { transform: scale(0.92); }
-  .mega-card.selected { 
-    background: #ff3333; 
-    border-color:#fff; color:#04040c; 
-    box-shadow: 0 0 15px rgba(255,60,60,0.6); 
-  }
-  
-  .info-btn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(255,80,80,0.2); color:#ff5555; font-size:12px; cursor:pointer; border:1px solid rgba(255,80,80,0.5); transition:0.2s; font-weight:900; font-family: sans-serif; margin-left: 6px; }
+  button.mega-card:hover { transform:translateY(-1px); border-color:#ff5555; color:#ff7777; background:rgba(255,60,60,0.12); box-shadow:0 0 9px rgba(255,60,60,0.2); }
+  button.mega-card:active { transform:scale(.94); transition-duration:45ms; }
+  button.mega-card.selected { background:linear-gradient(145deg,#ff3333,#ff6868); border-color:#fff; color:#04040c; box-shadow:0 0 10px rgba(255,60,60,0.42); }
+  button.mega-card.selected:active { transform:scale(.94); transition-duration:45ms; }
+
+  .info-btn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(255,80,80,0.2); color:#ff5555; font-size:12px; cursor:pointer; border:1px solid rgba(255,80,80,0.5); transition:120ms ease-out; font-weight:900; font-family: sans-serif; margin-left: 6px; }
   .info-btn:hover { background:#ff5555; color:#04040c; }
   
   .users { display:flex; flex-direction:column; gap:8px; }
-  .user-row { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.1); font-family: 'JetBrains Mono', monospace; font-size:.85rem; transition:.3s; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); gap: 12px; }
+  .user-row { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.1); font-family: 'JetBrains Mono', monospace; font-size:.85rem; transition:160ms ease-out; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); gap: 12px; }
   .user-row.voted { border-left:3px solid #22c55e; }
   .user-row.just-revealed { animation: popIn .5s ease; }
   @keyframes popIn { 0% { transform:scale(0.92); opacity:0.4; } 60% { transform:scale(1.03); } 100% { transform:scale(1); opacity:1; } }
@@ -424,7 +437,7 @@ PAGE = r"""
   .footer-note { font-family: 'JetBrains Mono', monospace; color:#3a3a5a; font-size:.7rem; margin-top:12px; text-align:center; letter-spacing:.15em; text-transform:uppercase; }
   
   .room-list { display:flex; flex-direction:column; gap:6px; }
-  .room-item { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.15); cursor:pointer; transition:.25s; font-family: 'JetBrains Mono', monospace; font-size:.85rem; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); }
+  .room-item { display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background: rgba(255,60,60,0.03); border:1px solid rgba(255,80,80,0.15); cursor:pointer; transition:120ms ease-out; font-family: 'JetBrains Mono', monospace; font-size:.85rem; clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); }
   .room-item:hover { background: rgba(255,60,60,0.1); border-color:#ff5555; transform:translateX(6px); box-shadow: -4px 0 24px rgba(255,60,60,0.4); }
   .room-item.selected { background: rgba(255,60,60,0.15); border-color:#ff5555; box-shadow: 0 0 15px rgba(255,60,60,0.3); }
   .room-item .count { color:#ff5555; font-size:.75rem; }
@@ -447,8 +460,8 @@ PAGE = r"""
     clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
   }
   .task-name-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  .task-name-wrapper label { font-size: 0.65rem; color: #ff5555; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 5px; margin-left: 10px; }
-  .task-name-input { width: 100%; font-size: 1.1rem; font-weight: bold; padding: 12px 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,80,80,0.4); color: #fff; transition: 0.3s; }
+  .task-name-wrapper label { display:block; font-size: 0.7rem; font-weight:700; color: #ff7777; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 7px; margin-left: 10px; }
+  .task-name-input { width: 100%; font-size: 1.1rem; font-weight: bold; padding: 12px 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,80,80,0.4); color: #fff; transition: 140ms ease-out; }
   .task-name-input:focus { border-color: #ff5555; box-shadow: 0 0 20px rgba(255,60,60,0.2); }
 
   .timer-box { display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.4); padding:8px 16px; border:1px solid rgba(255,80,80,0.3); clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%); flex-shrink: 0; }
@@ -498,7 +511,7 @@ PAGE = r"""
     clip-path: polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%);
     font-weight: 800;
     margin-left: 8px;
-    transition: 0.2s;
+    transition: 120ms ease-out;
   }
   .btn-transfer:hover {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
@@ -512,11 +525,14 @@ PAGE = r"""
 
   @media (max-width:600px) {
     .cards-grid { grid-template-columns: repeat(auto-fit, minmax(42px, 1fr)); }
-    .poker-card { font-size:.9rem; }
+    button.poker-card { font-size:.9rem; }
     .card { padding:20px; }
     #kill-counter { bottom:10px; right:10px; font-size:.65rem; }
     .mega-cat-name { font-size:.72rem; }
-    .mega-card { min-width:34px; height:38px; font-size:.8rem; padding:0 8px; }
+    button.mega-card { min-width:34px; height:38px; font-size:.8rem; padding:0 8px; }
+    .field-group { flex-basis:100%; }
+    .join-submit { flex:1 1 100%; width:100%; }
+    .timer-box { flex-wrap:wrap; justify-content:space-between; }
     .results-table th, .results-table td { padding:8px; font-size:.75rem; }
     .form-grid { grid-template-columns: 1fr; }
     .task-timer-bar { flex-direction: column; align-items: stretch; }
@@ -536,16 +552,23 @@ PAGE = r"""
 <div class="content">
   <div class="hud-header">
     <div class="hud-dot"></div>
-    <div class="hud-label">DRONE OPS · v11.2</div>
+    <div class="hud-label">DRONE OPS · v11.3</div>
   </div>
   <h1>Planning Poker</h1>
   <p class="subtitle">// estimate · vote · reveal · excel //</p>
 
   <div class="card" id="join-screen" style="max-width:900px;">
     <h3>[ СОЗДАТЬ НОВУЮ КОМНАТУ ]</h3>
-    <div class="row">
-      <input id="create-name-input" placeholder="Ваше имя (Создатель)" maxlength="20">
-      <input id="create-room-input" placeholder="Новый ID комнаты" maxlength="20">
+    <div class="row form-fields">
+      <div class="field-group">
+        <label class="field-label" for="create-name-input">Ваше имя</label>
+        <input id="create-name-input" placeholder="Например, Анна" maxlength="20" autocomplete="name">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="create-room-input">ID новой комнаты</label>
+        <input id="create-room-input" placeholder="Например, sprint-42" maxlength="20" autocomplete="off" aria-describedby="room-id-help">
+        <small class="field-help" id="room-id-help">Латинские буквы, цифры, дефис или подчёркивание</small>
+      </div>
     </div>
     <div class="mode-picker">
       <div class="mode-btn active" data-mode="normal" onclick="pickMode('normal')">
@@ -569,9 +592,12 @@ PAGE = r"""
     
     <div id="join-existing-area" class="join-area hidden">
       <div class="join-selected-name" id="join-selected-label">Выбрана комната: ...</div>
-      <div class="row">
-        <input id="join-name-input" placeholder="Ваше имя (Участник)" maxlength="20">
-        <button onclick="joinExistingRoom()" style="width: 150px;">Войти →</button>
+      <div class="row form-fields join-fields">
+        <div class="field-group">
+          <label class="field-label" for="join-name-input">Ваше имя</label>
+          <input id="join-name-input" placeholder="Например, Алексей" maxlength="20" autocomplete="name">
+        </div>
+        <button type="button" onclick="joinExistingRoom()" class="join-submit">Войти →</button>
       </div>
     </div>
     <p class="footer-note" style="margin-top:20px;">Защита от потери связи: неактивные участники удаляются автоматически</p>
@@ -590,28 +616,34 @@ PAGE = r"""
           </div>
 
           <div class="share-box">
-            <input id="share-link" readonly>
-            <button onclick="copyLink(event)">📋 Copy</button>
+            <div class="field-group share-link-field">
+              <label class="field-label" for="share-link">Ссылка для приглашения участников</label>
+              <input id="share-link" readonly aria-label="Ссылка для приглашения участников">
+            </div>
+            <button type="button" onclick="copyLink(event)">📋 Copy</button>
           </div>
 
           <div class="task-timer-bar">
             <div class="task-name-wrapper">
-              <label>Оцениваемая задача</label>
+              <label for="task-name-input">Оцениваемая задача</label>
               <input class="task-name-input" id="task-name-input" placeholder="Введите название задачи..." onchange="updateTaskName(this.value)">
             </div>
             <div class="timer-box hidden" id="timer-box">
-              <select id="timer-select" class="timer-select" onchange="updateTimerSetting()">
-                <option value="5">5 сек</option>
-                <option value="10">10 сек</option>
-                <option value="15">15 сек</option>
-                <option value="20" selected>20 сек</option>
-                <option value="25">25 сек</option>
-                <option value="30">30 сек</option>
-                <option value="45">45 сек</option>
-                <option value="60">60 сек</option>
-              </select>
+              <div class="timer-setting">
+                <label class="field-label timer-label" for="timer-select">Длительность таймера</label>
+                <select id="timer-select" class="timer-select" onchange="updateTimerSetting()">
+                  <option value="5">5 сек</option>
+                  <option value="10">10 сек</option>
+                  <option value="15">15 сек</option>
+                  <option value="20" selected>20 сек</option>
+                  <option value="25">25 сек</option>
+                  <option value="30">30 сек</option>
+                  <option value="45">45 сек</option>
+                  <option value="60">60 сек</option>
+                </select>
+              </div>
               <div class="timer-display" id="timer-display">20</div>
-              <button id="timer-start-btn" onclick="toggleTimer()" style="padding:8px 12px; font-size:1rem; min-width:40px;">▶</button>
+              <button type="button" id="timer-start-btn" onclick="toggleTimer()" style="padding:8px 12px; font-size:1rem; min-width:40px;">▶</button>
             </div>
           </div>
 
@@ -678,8 +710,8 @@ PAGE = r"""
     <div class="modal-title">Сохранение в Excel</div>
     <div class="form-grid" id="save-form-fields" style="grid-template-columns: 1fr;">
       <div class="form-group">
-        <label>Название задачи (Имя файла)</label>
-        <input type="text" id="save-task-title" style="font-weight:bold; color:#ff5555;">
+        <label for="save-task-title">Название задачи (имя файла)</label>
+        <input type="text" id="save-task-title" placeholder="Например, Авторизация пользователя" style="font-weight:bold; color:#ff5555;">
       </div>
       <div id="save-categories-fields" class="form-grid" style="margin-bottom:0;"></div>
     </div>
@@ -694,7 +726,7 @@ PAGE = r"""
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 let W = 0, H = 0;
-let DPR = Math.min(window.devicePixelRatio || 1, 2);
+let DPR = Math.min(window.devicePixelRatio || 1, 1.5);
 const mouse = { x: 0, y: 0 };
 
 let drone = {
@@ -715,12 +747,13 @@ function spawnBugs() { bugs.length = 0; for (let i = 0; i < BUG_COUNT; i++) bugs
 function updateBugCount() { const el = document.getElementById('bug-count'); if (el) el.textContent = bugs.length; }
 
 function updateBugs(dt) {
+  const frameScale = Math.min(Math.max((dt || 16.667) / 16.667, 0.25), 3);
   for (const b of bugs) {
-    b.pauseTimer++;
+    b.pauseTimer += frameScale;
     if (b.pauseTimer > b.pauseCd) { b.pauseTimer = 0; b.pauseCd = 120 + Math.random() * 300; b.isPaused = !b.isPaused; }
-    if (b.isPaused) { b.vx *= 0.9; b.vy *= 0.9; }
+    if (b.isPaused) { b.vx *= Math.pow(0.9, frameScale); b.vy *= Math.pow(0.9, frameScale); }
     else {
-      b.turnTimer++;
+      b.turnTimer += frameScale;
       if (b.turnTimer > b.turnCd) {
         b.turnTimer = 0; b.turnCd = 80 + Math.random() * 150;
         const angle = Math.atan2(b.vy, b.vx);
@@ -731,26 +764,26 @@ function updateBugs(dt) {
     }
     const spd = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
     if (spd > 1.2) { b.vx = (b.vx / spd) * 1.2; b.vy = (b.vy / spd) * 1.2; }
-    b.vx *= 0.97; b.vy *= 0.97;
-    b.x += b.vx; b.y += b.vy;
+    const friction = Math.pow(0.97, frameScale);
+    b.vx *= friction; b.vy *= friction;
+    b.x += b.vx * frameScale; b.y += b.vy * frameScale;
     if (spd > 0.05) {
       const targetAngle = Math.atan2(b.vy, b.vx);
       let diff = targetAngle - b.bodyAngle;
       while (diff > Math.PI) diff -= Math.PI * 2;
       while (diff < -Math.PI) diff += Math.PI * 2;
-      b.bodyAngle += diff * 0.15;
+      b.bodyAngle += diff * (1 - Math.pow(0.85, frameScale));
     }
     if (b.x < 15) { b.x = 15; b.vx = Math.abs(b.vx); }
     if (b.x > W - 15) { b.x = W - 15; b.vx = -Math.abs(b.vx); }
     if (b.y < 15) { b.y = 15; b.vy = Math.abs(b.vy); }
     if (b.y > H - 15) { b.y = H - 15; b.vy = -Math.abs(b.vy); }
-    if (!b.isPaused && spd > 0.1) b.legPhase += b.legSpeed;
+    if (!b.isPaused && spd > 0.1) b.legPhase += b.legSpeed * frameScale;
     const dx = b.x - mouse.x; const dy = b.y - mouse.y;
     const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    if (dist < 100) { const push = (100 - dist) / 100 * 0.8; b.vx += (dx / dist) * push; b.vy += (dy / dist) * push; }
+    if (dist < 100) { const push = (100 - dist) / 100 * 0.8 * frameScale; b.vx += (dx / dist) * push; b.vy += (dy / dist) * push; }
   }
 }
-
 function drawBugs() {
   for (const b of bugs) {
     ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.bodyAngle);
@@ -830,10 +863,13 @@ function killBug(index) {
   updateBugCount();
 }
 
-function updateBugParts() {
+function updateBugParts(dt) {
+  const frameScale = Math.min(Math.max((dt || 16.667) / 16.667, 0.25), 3);
   for (let i = bugParts.length - 1; i >= 0; i--) {
     const p = bugParts[i];
-    p.x += p.vx; p.y += p.vy; p.vx *= 0.88; p.vy *= 0.88; p.vy += 0.15; p.life -= 0.045;
+    p.x += p.vx * frameScale; p.y += p.vy * frameScale;
+    p.vx *= Math.pow(0.88, frameScale); p.vy *= Math.pow(0.88, frameScale);
+    p.vy += 0.15 * frameScale; p.life -= 0.045 * frameScale;
     if (p.life <= 0) bugParts.splice(i, 1);
   }
 }
@@ -853,11 +889,24 @@ function positionElements() { const cornerPad = Math.min(W, H) * 0.16; drone.R =
 function resize() { W = window.innerWidth; H = window.innerHeight; canvas.width = W * DPR; canvas.height = H * DPR; canvas.style.width = W + 'px'; canvas.style.height = H + 'px'; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); positionElements(); if (bugs.length === 0) spawnBugs(); }
 function hexA(hex, a) { const n = parseInt(hex.slice(1), 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return `rgba(${r},${g},${b},${a})`; }
 
-function updateDrone(t) {
+function updateDrone(t, dt) {
+  const frameScale = Math.min(Math.max((dt || 16.667) / 16.667, 0.25), 3);
   drone.bobPhase = t * 0.002; drone.antennaPhase = t * 0.005; drone.panelPhase = t * 0.001;
-  drone.explode *= 0.9; drone.surprise *= 0.98; drone.visorGlow += (drone.surprise - drone.visorGlow) * 0.15; drone.scanPhase = (t * 0.0009) % 1;
-  for (let i = sparkParticles.length - 1; i >= 0; i--) { const s = sparkParticles[i]; s.x += s.vx; s.y += s.vy; s.vx *= 0.94; s.vy *= 0.94; s.vy += 0.15; s.life -= 0.02; if (s.life <= 0) sparkParticles.splice(i, 1); }
-  for (let i = lasers.length - 1; i >= 0; i--) { lasers[i].life -= 0.11; if (lasers[i].life <= 0) lasers.splice(i, 1); }
+  drone.explode *= Math.pow(0.9, frameScale);
+  drone.surprise *= Math.pow(0.98, frameScale);
+  drone.visorGlow += (drone.surprise - drone.visorGlow) * (1 - Math.pow(0.85, frameScale));
+  drone.scanPhase = (t * 0.0009) % 1;
+  for (let i = sparkParticles.length - 1; i >= 0; i--) {
+    const s = sparkParticles[i];
+    s.x += s.vx * frameScale; s.y += s.vy * frameScale;
+    s.vx *= Math.pow(0.94, frameScale); s.vy *= Math.pow(0.94, frameScale);
+    s.vy += 0.15 * frameScale; s.life -= 0.02 * frameScale;
+    if (s.life <= 0) sparkParticles.splice(i, 1);
+  }
+  for (let i = lasers.length - 1; i >= 0; i--) {
+    lasers[i].life -= 0.11 * frameScale;
+    if (lasers[i].life <= 0) lasers.splice(i, 1);
+  }
 }
 
 function drawDrone() {
@@ -1020,23 +1069,47 @@ function triggerExplosion() {
   flash.classList.remove('active'); void flash.offsetWidth; flash.classList.add('active');
 }
 
-let lastT = performance.now();
+let lastFrameAt = 0;
 let bugCheckTimer = 0, bugRespawnCooldown = 0;
+let animationFrameId = 0;
+const TARGET_FRAME_MS = 1000 / 30;
 function loop(t) {
-  const dt = t - lastT; lastT = t;
-  updateDrone(t); updateBugs(dt); updateBugParts(); drawScene();
+  animationFrameId = 0;
+  if (document.hidden) return;
+  const elapsed = lastFrameAt ? t - lastFrameAt : TARGET_FRAME_MS;
+  if (elapsed < TARGET_FRAME_MS) {
+    animationFrameId = requestAnimationFrame(loop);
+    return;
+  }
+  const dt = Math.min(elapsed, 100);
+  lastFrameAt = t;
+  updateDrone(t, dt); updateBugs(dt); updateBugParts(dt); drawScene();
   bugCheckTimer += dt;
   if (bugRespawnCooldown > 0) bugRespawnCooldown -= dt;
   if (bugCheckTimer > 1000 && bugRespawnCooldown <= 0) {
     bugCheckTimer = 0;
     if (bugs.length < BUG_MIN) {
       for (let i = 0; i < BUG_SPAWN_AMOUNT; i++) bugs.push(createBug());
-      updateBugCount(); 
+      updateBugCount();
       bugRespawnCooldown = 1500;
     }
   }
-  requestAnimationFrame(loop);
+  animationFrameId = requestAnimationFrame(loop);
 }
+function startBackgroundAnimation() {
+  if (!document.hidden && !animationFrameId) {
+    lastFrameAt = 0;
+    animationFrameId = requestAnimationFrame(loop);
+  }
+}
+function stopBackgroundAnimation() {
+  if (animationFrameId) cancelAnimationFrame(animationFrameId);
+  animationFrameId = 0;
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) stopBackgroundAnimation();
+  else startBackgroundAnimation();
+});
 
 window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('touchmove', e => { if (e.touches[0]) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; } });
@@ -1044,7 +1117,7 @@ window.addEventListener('click', e => { if (e.target.closest && e.target.closest
 window.addEventListener('resize', resize);
 
 mouse.x = window.innerWidth / 2; mouse.y = window.innerHeight / 2;
-resize(); requestAnimationFrame(loop);
+resize(); startBackgroundAnimation();
 
 const CATEGORIES = [
   { id: "backend", name: "Backend", range: "4-7", min: 4, max: 7, tooltip: "<b>0</b> Бэкенд не меняется<br><b>4</b> Изменение существующего API, добавление простого поля<br><b>5</b> Новый endpoint или изменение бизнес-логики сервиса<br><b>6</b> Несколько сервисов, сложная валидация<br><b>7</b> Существенная переработка доменной логики" },
@@ -1065,6 +1138,7 @@ let state = {
   timerEnd: 0, timerDuration: 20, timerInterval: null, audioCtx: null,
   gameOverPlayed: false, taskName: '', selectedRoomForJoin: '',
   sessionToken: '', pollTimer: null, roomsTimer: null, active: false,
+  voteQueue: Promise.resolve(), votePending: 0,
   exportTotalEdited: false, exportDurationEdited: false
 };
 
@@ -1095,7 +1169,7 @@ function clearJoinToken(room) {
 async function apiRequest(path, options = {}) {
   const headers = { 'Accept': 'application/json', ...(options.headers || {}) };
   if (options.body !== undefined) headers['Content-Type'] = 'application/json';
-  if (state.sessionToken) headers['X-Session-Token'] = state.sessionToken;
+  if (state.sessionToken && !headers['X-Session-Token']) headers['X-Session-Token'] = state.sessionToken;
   const response = await fetch(path, {
     method: options.method || 'GET',
     headers,
@@ -1313,6 +1387,8 @@ function enterRoom(response, token) {
   state.revealed = false;
   state.lastData = null;
   state.myVote = state.mode === 'mega' ? {} : null;
+  state.voteQueue = Promise.resolve();
+  state.votePending = 0;
   state.timerEnd = 0;
   state.gameOverPlayed = false;
   saveJoinToken(state.room, token);
@@ -1345,7 +1421,7 @@ function enterRoom(response, token) {
   const timerBox = document.getElementById('timer-box');
   timerBox.classList.remove('hidden');
   document.getElementById('timer-start-btn').style.display = state.isAdmin ? '' : 'none';
-  document.getElementById('timer-select').style.display = state.isAdmin ? '' : 'none';
+  document.querySelector('.timer-setting').style.display = state.isAdmin ? '' : 'none';
   poll();
 }
 
@@ -1360,26 +1436,56 @@ function buildCards() {
   const grid = document.getElementById('cards');
   grid.replaceChildren();
   NORMAL_CARDS.forEach(value => {
-    const card = document.createElement('div');
+    const card = document.createElement('button');
+    card.type = 'button';
     card.className = 'poker-card';
     card.textContent = value;
     card.dataset.value = value;
+    card.setAttribute('aria-label', `Выбрать оценку ${value}`);
+    card.setAttribute('aria-pressed', 'false');
     card.addEventListener('click', () => vote(value));
     grid.appendChild(card);
   });
 }
-async function vote(value) {
-  if (state.revealed || !state.active || !NORMAL_CARDS.includes(String(value))) return;
-  
-  // Оптимистичный UI (мгновенно)
-  state.myVote = String(value);
-  document.querySelectorAll('.poker-card').forEach(card => {
-    card.classList.toggle('selected', card.dataset.value === state.myVote);
+function queueVoteRequest(body) {
+  const roomId = state.room;
+  const sessionToken = state.sessionToken;
+  state.votePending += 1;
+
+  // Все клики отправляются в порядке нажатий: быстрый повторный выбор не теряется.
+  const operation = state.voteQueue.catch(() => {}).then(() => {
+    if (!state.active || state.room !== roomId || state.sessionToken !== sessionToken) return;
+    return apiRequest('/api/vote', {
+      method: 'POST',
+      body: { ...body, room: roomId },
+      headers: { 'X-Session-Token': sessionToken }
+    });
   });
 
-  try {
-    await apiRequest('/api/vote', { method: 'POST', body: { room: state.room, vote: String(value) } });
-  } catch (error) { showRequestError(error); }
+  state.voteQueue = operation.catch(error => {
+    if (state.active && state.room === roomId && state.sessionToken === sessionToken) {
+      showRequestError(error);
+    }
+  }).finally(() => {
+    if (state.room === roomId && state.sessionToken === sessionToken) {
+      state.votePending = Math.max(0, state.votePending - 1);
+    }
+  });
+  return state.voteQueue;
+}
+
+async function vote(value) {
+  const selectedValue = String(value);
+  if (state.revealed || !state.active || !NORMAL_CARDS.includes(selectedValue)) return;
+
+  // Мгновенно обновляем только выбранную карточку.
+  state.myVote = selectedValue;
+  document.querySelectorAll('.poker-card').forEach(card => {
+    const selected = card.dataset.value === selectedValue;
+    card.classList.toggle('selected', selected);
+    card.setAttribute('aria-pressed', String(selected));
+  });
+  return queueVoteRequest({ vote: selectedValue });
 }
 function buildMegaUI() {
   const container = document.getElementById('mega-categories');
@@ -1410,11 +1516,14 @@ function buildMegaUI() {
     const options = document.createElement('div');
     options.className = 'mega-cat-options';
     getOptions(cat).forEach(value => {
-      const card = document.createElement('div');
+      const card = document.createElement('button');
+      card.type = 'button';
       card.className = 'mega-card';
       card.textContent = value;
       card.dataset.value = value;
       card.dataset.cat = cat.id;
+      card.setAttribute('aria-label', `${cat.name}: выбрать ${value}`);
+      card.setAttribute('aria-pressed', 'false');
       card.addEventListener('click', () => voteMega(cat.id, value));
       options.appendChild(card);
     });
@@ -1430,30 +1539,36 @@ function showCatInfo(id) {
   }
 }
 async function voteMega(categoryId, value) {
+  const selectedValue = String(value);
   if (state.revealed || !state.active) return;
   const category = [...CATEGORIES, HOURS_CAT].find(item => item.id === categoryId);
-  if (!category || !getOptions(category).includes(String(value))) return;
+  if (!category || !getOptions(category).includes(selectedValue)) return;
 
-  // Оптимистичный UI (мгновенно)
-  if (!state.myVote) state.myVote = {};
-  state.myVote[categoryId] = String(value);
+  if (!state.myVote || typeof state.myVote !== 'object') state.myVote = {};
+  state.myVote[categoryId] = selectedValue;
   document.querySelectorAll(`.mega-card[data-cat="${categoryId}"]`).forEach(card => {
-    card.classList.toggle('selected', card.dataset.value === String(value));
+    const selected = card.dataset.value === selectedValue;
+    card.classList.toggle('selected', selected);
+    card.setAttribute('aria-pressed', String(selected));
   });
-
-  try {
-    await apiRequest('/api/vote', { method: 'POST', body: { room: state.room, category: categoryId, value: String(value) } });
-  } catch (error) { showRequestError(error); }
+  return queueVoteRequest({ category: categoryId, value: selectedValue });
 }
 async function revealResults() {
   if (!state.isAdmin || !state.active) return;
-  try { await apiRequest('/api/reveal', { method: 'POST', body: { room: state.room } }); }
-  catch (error) { showRequestError(error); }
+  try {
+    // Не раскрываем раунд раньше, чем завершится последний клик администратора.
+    await state.voteQueue.catch(() => {});
+    if (!state.active) return;
+    await apiRequest('/api/reveal', { method: 'POST', body: { room: state.room } });
+  } catch (error) { showRequestError(error); }
 }
 async function resetVotes() {
   if (!state.isAdmin || !state.active) return;
-  try { await apiRequest('/api/reset', { method: 'POST', body: { room: state.room } }); }
-  catch (error) { showRequestError(error); }
+  try {
+    await state.voteQueue.catch(() => {});
+    if (!state.active) return;
+    await apiRequest('/api/reset', { method: 'POST', body: { room: state.room } });
+  } catch (error) { showRequestError(error); }
 }
 async function leaveRoom() {
   if (!state.active) { location.href = '/'; return; }
@@ -1584,7 +1699,7 @@ function updateUI(data) {
   state.isAdmin = data.admin_id === data.current_user_id;
   document.getElementById('task-name-input').readOnly = !state.isAdmin;
   document.getElementById('timer-start-btn').style.display = state.isAdmin ? '' : 'none';
-  document.getElementById('timer-select').style.display = state.isAdmin ? '' : 'none';
+  document.querySelector('.timer-setting').style.display = state.isAdmin ? '' : 'none';
 
   if (typeof data.task_name === 'string') {
     state.taskName = data.task_name;
@@ -1609,7 +1724,7 @@ function updateUI(data) {
     document.getElementById('timer-start-btn').textContent = '▶';
   }
 
-  state.myVote = data.my_vote;
+  if (state.votePending === 0) state.myVote = data.my_vote;
   const wasRevealed = state.revealed;
   state.revealed = Boolean(data.revealed);
   if (state.revealed && !wasRevealed) triggerExplosion();
@@ -1619,7 +1734,8 @@ function updateUI(data) {
       const value = state.myVote ? state.myVote[card.dataset.cat] : null;
       const selected = value !== null && value !== undefined && card.dataset.value === value;
       card.classList.toggle('selected', selected);
-      card.style.pointerEvents = state.revealed ? 'none' : 'auto';
+      card.setAttribute('aria-pressed', String(selected));
+      card.disabled = state.revealed;
       card.style.opacity = !state.revealed || selected ? '1' : '0.4';
     });
     document.querySelectorAll('.mega-cat').forEach(block => {
@@ -1630,7 +1746,8 @@ function updateUI(data) {
     document.querySelectorAll('.poker-card').forEach(card => {
       const selected = card.dataset.value === state.myVote;
       card.classList.toggle('selected', selected);
-      card.style.pointerEvents = state.revealed ? 'none' : 'auto';
+      card.setAttribute('aria-pressed', String(selected));
+      card.disabled = state.revealed;
       card.style.opacity = !state.revealed || selected ? '1' : '0.4';
     });
   }
@@ -1831,7 +1948,10 @@ function openSaveModal() {
   state.exportDurationEdited = false;
   CATEGORIES.concat(HOURS_CAT).forEach(category => {
     const average = getAverageForCategory(data.users, category.id);
-    const field = createFormGroup(category.name, 'save-' + category.id, average.toFixed(1), {
+    const fieldLabel = category.id === 'hours'
+      ? `${category.name} (0–21)`
+      : `${category.name} (0–${category.max})`;
+    const field = createFormGroup(fieldLabel, 'save-' + category.id, average.toFixed(1), {
       min: 0, max: category.id === 'hours' ? 21 : category.max, step: '0.1'
     });
     field.input.addEventListener('input', () => {
